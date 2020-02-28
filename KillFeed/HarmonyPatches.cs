@@ -1,11 +1,10 @@
-﻿using Harmony;
-using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Reflection;
-using System.Text;
+
+using RimWorld;
 using Verse;
+
+using HarmonyLib;
 
 namespace KillFeed
 {
@@ -17,11 +16,34 @@ namespace KillFeed
     {
         static HarmonyPatches()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("kahdeg.KillFeed");
+
+            Log.Message("0");
+            Harmony harmony = null;
+            try
+            {
+                //HarmonyInstance harmony = HarmonyInstance.Create("kahdeg.KillFeed");
+                harmony = new Harmony("kahdeg.KillFeed");
+            }
+            catch (Exception ex)
+            {
+                Log.Message(ex.Message);
+            }
+
+            Log.Message("1");
+
+            if (harmony == null)
+            {
+                Log.Message("failed to patch");
+                return;
+            }
 
             {
+
+                Log.Message("2");
                 Type targetType = typeof(Pawn);
                 MethodInfo targetMethod = targetType.GetMethod("Kill");
+
+                Log.Message("3");
 
                 harmony.Patch(
                     targetMethod,
