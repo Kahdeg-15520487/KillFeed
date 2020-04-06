@@ -68,6 +68,7 @@ namespace KillFeed
             {
 
                 //Log.Message(pawn.def.defName);
+                //Log.Message(pawn.Faction.IsPlayer + "");
 
                 KillAnnouncement announcement = new KillAnnouncement
                 {
@@ -79,11 +80,13 @@ namespace KillFeed
                 //If the damage info got a value then something killed them normally.
                 if (dinfo != null && dinfo.HasValue && dinfo.Value.Instigator != null)
                 {
+                    //Log.Message("natural death");
                     Thing instigator = dinfo.Value.Instigator;
                     announcement.perpetrator = instigator;
 
                     //Figure out the context of death.
                     bool victimIsFriendly = false;
+                    bool victimIsNeutral = false;
                     if (announcement.victim.Faction != null)
                     {
                         if (announcement.victim.Faction.IsPlayer)
@@ -99,79 +102,78 @@ namespace KillFeed
                             }
                         }
                     }
-
-                    bool perpetratorIsFriendly = false;
-                    bool perpetratorIsWildAnimal = false;
-                    if (announcement.perpetrator.Faction != null)
-                    {
-                        if (announcement.perpetrator.Faction.HasName || announcement.perpetrator.Faction.Name == "New Arrivals")
-                        {
-                            if (announcement.perpetrator.Faction.IsPlayer)
-                            {
-                                //Log.Message("Perpetrator faction is player's");
-                                perpetratorIsFriendly = true;
-                            }
-                            else
-                            {
-                                FactionRelation relationWithPlayer = announcement.perpetrator.Faction.RelationWith(Faction.OfPlayer);
-                                //Log.Message(announcement.perpetrator.Faction.Name);
-                                if (relationWithPlayer.kind == FactionRelationKind.Hostile && relationWithPlayer.goodwill >= 40f)
-                                {
-                                    perpetratorIsFriendly = true;
-                                    //Log.Message("Perpetrator faction is hostile");
-                                }
-                                else
-                                {
-                                    //Log.Message("Perpetrator faction is ally");
-                                }
-
-                            }
-                        }
-                        else
-                        {
-                            //Log.Message("perpetrator faction has no name" + announcement.perpetrator.Faction.Name);
-                        }
-                    }
                     else
                     {
-                        //Log.Message("perpetrator has no faction");
-                        perpetratorIsWildAnimal = true;
+                        victimIsNeutral = true;
                     }
+
+                    //bool perpetratorIsFriendly = false;
+                    //bool perpetratorIsNeutral = false;
+                    //if (announcement.perpetrator.Faction != null)
+                    //{
+                    //    if (announcement.perpetrator.Faction.HasName || announcement.perpetrator.Faction.Name == "New Arrivals")
+                    //    {
+                    //        if (announcement.perpetrator.Faction.IsPlayer)
+                    //        {
+                    //            //Log.Message("Perpetrator faction is player's");
+                    //            perpetratorIsFriendly = true;
+                    //        }
+                    //        else
+                    //        {
+                    //            FactionRelation relationWithPlayer = announcement.perpetrator.Faction.RelationWith(Faction.OfPlayer);
+                    //            //Log.Message(announcement.perpetrator.Faction.Name);
+                    //            if (relationWithPlayer.kind == FactionRelationKind.Hostile && relationWithPlayer.goodwill >= 40f)
+                    //            {
+                    //                perpetratorIsFriendly = true;
+                    //                //Log.Message("Perpetrator faction is hostile");
+                    //            }
+                    //            else
+                    //            {
+                    //                //Log.Message("Perpetrator faction is ally");
+                    //            }
+
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        //Log.Message("perpetrator faction has no name" + announcement.perpetrator.Faction.Name);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    //Log.Message("perpetrator has no faction");
+                    //    perpetratorIsNeutral = true;
+                    //}
+
+                    //categorize announcement type
+                    announcement.type = KillAnnouncementType.Ignore;
 
                     if (victimIsFriendly)
                     {
-                        if (!perpetratorIsFriendly)
-                        {
-                            announcement.type = KillAnnouncementType.Enemy;
-                        }
-                    }
-                    else
-                    {
-                        if (perpetratorIsFriendly)
+                        if (ModData.Settings.DisplayAllyDeath)
                         {
                             announcement.type = KillAnnouncementType.Ally;
                         }
                     }
-
-                    if (perpetratorIsWildAnimal)
+                    else
                     {
-                        announcement.type = KillAnnouncementType.WildAnimal;
+                        if (victimIsNeutral)
+                        {
+                            if (ModData.Settings.DisplayWildAnimalDeath)
+                            {
+                                announcement.type = KillAnnouncementType.WildAnimal;
+                            }
+                        }
+                        else
+                        {
+                            if (ModData.Settings.DisplayEnemyDeath)
+                            {
+                                announcement.type = KillAnnouncementType.Enemy;
+                            }
+                        }
                     }
 
-                    if (!Controller.Settings.DisplayAllyKill)
-                    {
-                        announcement.type = KillAnnouncementType.Ignore;
-                    }
-
-                    if (!Controller.Settings.DisplayEnemyKill)
-                    {
-                        announcement.type = KillAnnouncementType.Ignore;
-                    }
-
-                    if (!Controller.Settings.DisplayWildAnimalKill)
-                    {
-                        announcement.type = KillAnnouncementType.Ignore;
-                    }
+                    //Log.Message(announcement.type.ToString());
 
                     //Log.Message(announcement.perpetrator.Position.ToStringSafe());
 
@@ -187,7 +189,7 @@ namespace KillFeed
                 else
                 {
                     //Log.Message(announcement.victim.Position.ToStringSafe());
-
+                    announcement.type = KillAnnouncementType.Magic;
                     if (exactCulprit != null)
                     {
                         announcement.flavorText = " died from " + exactCulprit.Label;

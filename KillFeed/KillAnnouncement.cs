@@ -12,7 +12,8 @@ namespace KillFeed
         WildAnimal,
         Ally,
         Enemy,
-        Ignore
+        Ignore,
+        Magic
     }
 
     /// <summary>
@@ -32,10 +33,11 @@ namespace KillFeed
         public static Color colorAlly = new Color(0.5f, 0.84f, 0.91f, colorAlpha);
         public static Color colorEnemy = new Color(0.91f, 0.5f, 0.5f, colorAlpha);
         public static Color colorNeutral = new Color(0.5f, 0.5f, 0.5f, colorAlpha);
+        public static Color colorMagic = new Color(0.2f, 0.7f, 0.3f, colorAlpha);
 
         public KillAnnouncement()
         {
-            type = KillAnnouncementType.WildAnimal;
+            type = KillAnnouncementType.Ignore;
         }
 
         public void OnGUI(Rect inRect)
@@ -62,6 +64,11 @@ namespace KillFeed
                 case KillAnnouncementType.Enemy:
                     {
                         Widgets.DrawBoxSolid(ininRect, colorEnemy);
+                    }
+                    break;
+                case KillAnnouncementType.Magic:
+                    {
+                        Widgets.DrawBoxSolid(ininRect, colorMagic);
                     }
                     break;
                 case KillAnnouncementType.Ignore:
@@ -155,7 +162,7 @@ namespace KillFeed
                 }
                 else
                 {
-                    Log.Message("victim null");
+                    Log.Message("there is no victim, no one is dead.");
                 }
             }
 

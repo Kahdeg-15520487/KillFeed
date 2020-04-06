@@ -16,9 +16,9 @@ namespace KillFeed
         /// Constant for ticksLeftUntilRemove.
         /// </summary>
         //todo make this a setting
-        //public static int ticksBetweenRemovals = 800;
+        public static int defaultTicksBetweenRemovals = 800;
 
-        public static float rowHeight = 32f;
+        public static float defaultRowHeight = 32f;
 
         /// <summary>
         /// Current ongoing game.
@@ -102,7 +102,14 @@ namespace KillFeed
 
             if (ticksLeftUntilRemove <= 0 && feed.Count > 0)
             {
-                ticksLeftUntilRemove = Controller.Settings.TicksBetweenRemovals;
+                if (ModData.Settings.TicksBetweenRemovals > 0)
+                {
+                    ticksLeftUntilRemove = ModData.Settings.TicksBetweenRemovals;
+                }
+                else
+                {
+                    ticksLeftUntilRemove = defaultTicksBetweenRemovals;
+                }
             }
 
             //Render the feed.
@@ -110,14 +117,16 @@ namespace KillFeed
             float quarterWidth = screen.x / 4f;
             float quarterHeight = screen.y;
 
-            int left = Controller.Settings.LeftOffset;
-            int top = Controller.Settings.TopOffset;
+            int left = ModData.Settings.LeftOffset;
+            int top = ModData.Settings.TopOffset;
+            int rowHeight = ModData.Settings.Height == 0 ? (int)defaultRowHeight : ModData.Settings.Height;
+            int rowWidth = ModData.Settings.Width == 0 ? (int)quarterWidth : ModData.Settings.Width;
 
-            if (Controller.Settings.UseLeftRightPos)
+            if (ModData.Settings.UseLeftRightPos)
             {
-                if (Controller.Settings.DisplayPositionRight)
+                if (ModData.Settings.DisplayPositionRight)
                 {
-                    left = (int)(screen.x - quarterWidth);
+                    left = (int)(screen.x - rowWidth);
                     top = 0;
                 }
                 else
@@ -127,7 +136,6 @@ namespace KillFeed
                 }
             }
 
-            //Rect rect = new Rect(Controller.Settings.DisplayPosition ? screen.x - quarterWidth : 0, rowHeight, quarterWidth, quarterHeight);
             Rect rect = new Rect(left, top + rowHeight, quarterWidth, quarterHeight);
             float row = 0f;
 
@@ -136,6 +144,7 @@ namespace KillFeed
                 Rect rowRect = new Rect(rect);
                 rowRect.y += row;
                 rowRect.height = rowHeight;
+                rowRect.width = rowWidth;
 
                 announcement.OnGUI(rowRect);
                 row += rowRect.height;
@@ -148,12 +157,13 @@ namespace KillFeed
         /// <param name="announcement">Announcement to push.</param>
         public void PushAnnouncement(KillAnnouncement announcement)
         {
+            //Log.Message(announcement.type.ToString());
             feed.Insert(0, announcement);
-
+            int rowHeight = ModData.Settings.Height;
             //Pop last announcement if it would exceed the vertical screen size.
             float bottomY = rowHeight + (float)feed.Count * rowHeight;
 
-            if (bottomY >= (float)UI.screenHeight - 32f)
+            if (bottomY >= (float)UI.screenHeight - rowHeight)
             {
                 PopAnnouncement();
             }
