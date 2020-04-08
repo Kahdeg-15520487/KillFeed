@@ -29,6 +29,25 @@ namespace KillFeed
         public Hediff exactCulprit;
         public Rect currentRowRect;
 
+        #region time tracking
+        protected float Age {
+            get {
+                return RealTime.LastRealTime - startingTime;
+            }
+        }
+        protected float TimeLeft {
+            get {
+                return ModData.Settings.ExpirationTime - this.Age;
+            }
+        }
+        public bool Expired {
+            get {
+                return this.TimeLeft <= 0f;
+            }
+        }
+        private float startingTime;
+        #endregion
+
         public static float colorAlpha = 0.6f;
         public static Color colorAlly = new Color(0.5f, 0.84f, 0.91f, colorAlpha);
         public static Color colorEnemy = new Color(0.91f, 0.5f, 0.5f, colorAlpha);
@@ -38,6 +57,7 @@ namespace KillFeed
         public KillAnnouncement()
         {
             type = KillAnnouncementType.Ignore;
+            startingTime = RealTime.LastRealTime;
         }
 
         public void OnGUI(Rect inRect)

@@ -16,7 +16,7 @@ namespace KillFeed
         /// Constant for ticksLeftUntilRemove.
         /// </summary>
         //todo make this a setting
-        public static int defaultTicksBetweenRemovals = 800;
+        public static int defaultTicksBetweenRemovals = 10;
 
         public static float defaultRowHeight = 32f;
 
@@ -90,6 +90,8 @@ namespace KillFeed
             }
 
             //Do logic.
+
+
             if (ticksLeftUntilRemove > 0)
             {
                 ticksLeftUntilRemove--;
@@ -102,14 +104,7 @@ namespace KillFeed
 
             if (ticksLeftUntilRemove <= 0 && feed.Count > 0)
             {
-                if (ModData.Settings.TicksBetweenRemovals > 0)
-                {
-                    ticksLeftUntilRemove = ModData.Settings.TicksBetweenRemovals;
-                }
-                else
-                {
-                    ticksLeftUntilRemove = defaultTicksBetweenRemovals;
-                }
+                ticksLeftUntilRemove = defaultTicksBetweenRemovals;
             }
 
             //Render the feed.
@@ -122,7 +117,7 @@ namespace KillFeed
             int rowHeight = ModData.Settings.Height == 0 ? (int)defaultRowHeight : ModData.Settings.Height;
             int rowWidth = ModData.Settings.Width == 0 ? (int)quarterWidth : ModData.Settings.Width;
 
-            if (ModData.Settings.UseLeftRightPos)
+            if (!ModData.Settings.UseLeftRightPos)
             {
                 if (ModData.Settings.DisplayPositionRight)
                 {
@@ -176,7 +171,7 @@ namespace KillFeed
         {
             if (feed.Count > 0)
             {
-                feed.RemoveLast();
+                feed.RemoveAll((m) => m.Expired);
             }
         }
     }

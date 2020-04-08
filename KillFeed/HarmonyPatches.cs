@@ -17,7 +17,7 @@ namespace KillFeed
         static HarmonyPatches()
         {
 
-            Log.Message("0");
+            //Log.Message("0");
             Harmony harmony = null;
             try
             {
@@ -29,7 +29,7 @@ namespace KillFeed
                 Log.Message(ex.Message);
             }
 
-            Log.Message("1");
+            //Log.Message("1");
 
             if (harmony == null)
             {
@@ -39,11 +39,11 @@ namespace KillFeed
 
             {
 
-                Log.Message("2");
+                //Log.Message("2");
                 Type targetType = typeof(Pawn);
                 MethodInfo targetMethod = targetType.GetMethod("Kill");
 
-                Log.Message("3");
+                //Log.Message("3");
 
                 harmony.Patch(
                     targetMethod,
@@ -56,6 +56,7 @@ namespace KillFeed
 
         public static void Patch_Pawn_Kill(ref Thing __instance, ref DamageInfo? dinfo, ref Hediff exactCulprit)
         {
+            //Log.Message(ModData.Settings.ToString());
             //Log.Message("Pawn '" + __instance.LabelCap + "' got killed.");
             //Construct our killfeed announcement.
             if (__instance == null)

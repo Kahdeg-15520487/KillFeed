@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 using Verse;
 
 namespace KillFeed
@@ -42,8 +43,8 @@ namespace KillFeed
         private string WidthBuffer;
         private string HeightBuffer;
 
-        public int TicksBetweenRemovals;
-        private string TicksBetweenRemovalsBuffer;
+        public int ExpirationTime;
+        private string ExpirationTimeBuffer;
 
         internal void DoWindowContents(Rect canvas)
         {
@@ -63,8 +64,7 @@ namespace KillFeed
             this.listing_Standard.TextFieldNumericLabeled<int>("Width", ref Width, ref WidthBuffer, 0);
             this.listing_Standard.TextFieldNumericLabeled<int>("Height", ref Height, ref HeightBuffer, 0);
             this.listing_Standard.GapLine(12f);
-            this.listing_Standard.TextFieldNumericLabeled<int>("Killfeed's message appear duration (milisecond)", ref TicksBetweenRemovals, ref TicksBetweenRemovalsBuffer);
-            //this.DoSlider(ref TicksBetweenRemovals);
+            this.listing_Standard.TextFieldNumericLabeled<int>("Killfeed's message appear duration (second)", ref ExpirationTime, ref ExpirationTimeBuffer,1);
             this.listing_Standard.End();
         }
 
@@ -85,10 +85,26 @@ namespace KillFeed
             Scribe_Values.Look<int>(ref this.TopOffset, "TopOffset", 0, true);
             Scribe_Values.Look<int>(ref this.Width, "Width", 100, true);
             Scribe_Values.Look<int>(ref this.Height, "Height", 32, true);
-            Scribe_Values.Look<int>(ref this.TicksBetweenRemovals, "TicksBetweenRemovals", 800, true);
+            Scribe_Values.Look<int>(ref this.ExpirationTime, "TicksBetweenRemovals", 800, true);
             base.ExposeData();
         }
 
         private Listing_Standard listing_Standard;
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(nameof(this.DisplayAllyDeath) + this.DisplayAllyDeath);
+            sb.AppendLine(nameof(this.DisplayEnemyDeath) + this.DisplayEnemyDeath);
+            sb.AppendLine(nameof(this.DisplayWildAnimalDeath) + this.DisplayWildAnimalDeath);
+            sb.AppendLine(nameof(this.UseLeftRightPos) + this.UseLeftRightPos);
+            sb.AppendLine(nameof(this.DisplayPositionRight) + this.DisplayPositionRight);
+            sb.AppendLine(nameof(this.LeftOffset) + this.LeftOffset);
+            sb.AppendLine(nameof(this.TopOffset) + this.TopOffset);
+            sb.AppendLine(nameof(this.Width) + this.Width);
+            sb.AppendLine(nameof(this.Height) + this.Height);
+            sb.AppendLine(nameof(this.ExpirationTime) + this.ExpirationTime);
+            return sb.ToString();
+        }
     }
 }
