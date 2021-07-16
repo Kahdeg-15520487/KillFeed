@@ -61,8 +61,8 @@ namespace KillFeed
             this.listing_Standard.TextFieldNumericLabeled<int>("Top offset", ref TopOffset, ref RightOffsetBuffer, 0);
             this.listing_Standard.GapLine(12f);
             this.listing_Standard.Label("Width and Height of the notification box");
-            this.listing_Standard.TextFieldNumericLabeled<int>("Width", ref Width, ref WidthBuffer, 0);
-            this.listing_Standard.TextFieldNumericLabeled<int>("Height", ref Height, ref HeightBuffer, 0);
+            this.listing_Standard.TextFieldNumericLabeled<int>("Width", ref Width, ref WidthBuffer, 250);
+            this.listing_Standard.TextFieldNumericLabeled<int>("Height", ref Height, ref HeightBuffer, 32);
             this.listing_Standard.GapLine(12f);
             this.listing_Standard.TextFieldNumericLabeled<int>("Killfeed's message appear duration (second)", ref ExpirationTime, ref ExpirationTimeBuffer,1);
             this.listing_Standard.End();

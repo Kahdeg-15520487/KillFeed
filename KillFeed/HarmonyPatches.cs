@@ -97,7 +97,7 @@ namespace KillFeed
                         else
                         {
                             FactionRelation relationWithPlayer = announcement.victim.Faction.RelationWith(Faction.OfPlayer);
-                            if (relationWithPlayer.kind == FactionRelationKind.Hostile && relationWithPlayer.goodwill >= 40f)
+                            if (relationWithPlayer.kind == FactionRelationKind.Hostile && relationWithPlayer.baseGoodwill >= 40f)
                             {
                                 victimIsFriendly = true;
                             }
