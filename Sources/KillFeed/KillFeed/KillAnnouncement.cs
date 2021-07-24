@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using UnityEngine;
+
 using Verse;
 
 namespace KillFeed
@@ -122,36 +124,53 @@ namespace KillFeed
             }
 
             //Weapon if applicable
-            if (dinfo.HasValue && dinfo.Value.Weapon != null)
+            if (ModData.Settings.DisplayWeapon)
+            {
+                if (dinfo.HasValue && dinfo.Value.Weapon != null)
+                {
+                    currentXPosition += 2f;
+
+                    Rect portraitRect = new Rect(ininRect);
+                    portraitRect.x = currentXPosition;
+                    portraitRect.width = portraitRect.height;
+
+                    if (dinfo.Value.Weapon.uiIcon != null)
+                    {
+                        try
+                        {
+                            Widgets.ThingIcon(portraitRect, dinfo.Value.Weapon);
+                        }
+                        catch (Exception)
+                        {
+                            dinfo.Value.Weapon.label = "melee";
+                        }
+                    }
+
+                    currentXPosition += portraitRect.width;
+                    currentXPosition += 2f;
+
+                    Vector2 nameSize = Text.CalcSize(dinfo.Value.Weapon.label);
+                    Rect nameRect = new Rect(portraitRect);
+                    nameRect.x = currentXPosition;
+                    nameRect.width = nameSize.x;
+                    Widgets.Label(nameRect, dinfo.Value.Weapon.label);
+
+                    currentXPosition += nameRect.width;
+                }
+            }
+            else
             {
                 currentXPosition += 2f;
 
-                Rect portraitRect = new Rect(ininRect);
-                portraitRect.x = currentXPosition;
-                portraitRect.width = portraitRect.height;
-
-                if (dinfo.Value.Weapon.uiIcon != null)
-                {
-                    try
-                    {
-                        Widgets.ThingIcon(portraitRect, dinfo.Value.Weapon);
-                    }
-                    catch (Exception)
-                    {
-                        dinfo.Value.Weapon.label = "melee";
-                    }
-                }
-
-                currentXPosition += portraitRect.width;
-                currentXPosition += 2f;
-
-                Vector2 nameSize = Text.CalcSize(dinfo.Value.Weapon.label);
-                Rect nameRect = new Rect(portraitRect);
+                Vector2 nameSize = Text.CalcSize("killed");
+                Rect nameRect = new Rect(ininRect);
                 nameRect.x = currentXPosition;
                 nameRect.width = nameSize.x;
-                Widgets.Label(nameRect, dinfo.Value.Weapon.label);
+                Widgets.Label(nameRect, "killed");
 
                 currentXPosition += nameRect.width;
+
+                currentXPosition += 4f;
             }
 
             //Victim

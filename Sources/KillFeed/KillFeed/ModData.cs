@@ -1,5 +1,7 @@
 ﻿using System.Text;
+
 using UnityEngine;
+
 using Verse;
 
 namespace KillFeed
@@ -29,6 +31,7 @@ namespace KillFeed
         public bool DisplayWildAnimalDeath;
         public bool DisplayAllyDeath;
         public bool DisplayEnemyDeath;
+        public bool DisplayWeapon;
 
         public bool UseLeftRightPos;
         public bool DisplayPositionRight;
@@ -53,6 +56,7 @@ namespace KillFeed
             this.listing_Standard.CheckboxLabeled("Display wild animal's death?", ref DisplayWildAnimalDeath, "Display wild animal's death in kill feed");
             this.listing_Standard.CheckboxLabeled("Display ally's death?", ref DisplayAllyDeath, "Display ally's death in kill feed");
             this.listing_Standard.CheckboxLabeled("Display enemy's death?", ref DisplayEnemyDeath, "Display enemy's death in kill feed");
+            this.listing_Standard.CheckboxLabeled("Display death's detail?", ref DisplayWeapon, "Display death's detail in kill feed");
             this.listing_Standard.GapLine(12f);
             this.listing_Standard.CheckboxLabeled("Display killfeed on up right?", ref DisplayPositionRight, "Whether or not display kill feed on up right. Will reset the offset setting below to default value.");
             this.listing_Standard.Label("if above setting is checked, custom offset will be ignored.");
@@ -64,7 +68,7 @@ namespace KillFeed
             this.listing_Standard.TextFieldNumericLabeled<int>("Width", ref Width, ref WidthBuffer, 250);
             this.listing_Standard.TextFieldNumericLabeled<int>("Height", ref Height, ref HeightBuffer, 32);
             this.listing_Standard.GapLine(12f);
-            this.listing_Standard.TextFieldNumericLabeled<int>("Killfeed's message appear duration (second)", ref ExpirationTime, ref ExpirationTimeBuffer,1);
+            this.listing_Standard.TextFieldNumericLabeled<int>("Killfeed's message appear duration (second)", ref ExpirationTime, ref ExpirationTimeBuffer, 1);
             this.listing_Standard.End();
         }
 
@@ -79,6 +83,7 @@ namespace KillFeed
             Scribe_Values.Look<bool>(ref this.DisplayWildAnimalDeath, "DisplayAnimalKill", false, true);
             Scribe_Values.Look<bool>(ref this.DisplayAllyDeath, "DisplayAllyKill", true, true);
             Scribe_Values.Look<bool>(ref this.DisplayEnemyDeath, "DisplayEnemyKill", true, true);
+            Scribe_Values.Look<bool>(ref this.DisplayWeapon, "DisplayWeapon", true, true);
             Scribe_Values.Look<bool>(ref this.UseLeftRightPos, "UseLeftRightPos", true, true);
             Scribe_Values.Look<bool>(ref this.DisplayPositionRight, "DisplayPositionUpRight", true, true);
             Scribe_Values.Look<int>(ref this.LeftOffset, "LeftOffset", 0, true);
@@ -94,16 +99,17 @@ namespace KillFeed
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(nameof(this.DisplayAllyDeath) + this.DisplayAllyDeath);
-            sb.AppendLine(nameof(this.DisplayEnemyDeath) + this.DisplayEnemyDeath);
-            sb.AppendLine(nameof(this.DisplayWildAnimalDeath) + this.DisplayWildAnimalDeath);
-            sb.AppendLine(nameof(this.UseLeftRightPos) + this.UseLeftRightPos);
-            sb.AppendLine(nameof(this.DisplayPositionRight) + this.DisplayPositionRight);
-            sb.AppendLine(nameof(this.LeftOffset) + this.LeftOffset);
-            sb.AppendLine(nameof(this.TopOffset) + this.TopOffset);
-            sb.AppendLine(nameof(this.Width) + this.Width);
-            sb.AppendLine(nameof(this.Height) + this.Height);
-            sb.AppendLine(nameof(this.ExpirationTime) + this.ExpirationTime);
+            sb.AppendLine($"{nameof(this.DisplayAllyDeath)}:{this.DisplayAllyDeath}");
+            sb.AppendLine($"{nameof(this.DisplayEnemyDeath) }:{ this.DisplayEnemyDeath}");
+            sb.AppendLine($"{nameof(this.DisplayWeapon) }:{ this.DisplayWeapon}");
+            sb.AppendLine($"{nameof(this.DisplayWildAnimalDeath) }:{ this.DisplayWildAnimalDeath}");
+            sb.AppendLine($"{nameof(this.UseLeftRightPos) }:{ this.UseLeftRightPos}");
+            sb.AppendLine($"{nameof(this.DisplayPositionRight) }:{ this.DisplayPositionRight}");
+            sb.AppendLine($"{nameof(this.LeftOffset) }:{ this.LeftOffset}");
+            sb.AppendLine($"{nameof(this.TopOffset) }:{ this.TopOffset}");
+            sb.AppendLine($"{nameof(this.Width) }:{ this.Width}");
+            sb.AppendLine($"{nameof(this.Height) }:{ this.Height}");
+            sb.AppendLine($"{nameof(this.ExpirationTime) }:{ this.ExpirationTime}");
             return sb.ToString();
         }
     }
