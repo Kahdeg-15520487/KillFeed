@@ -124,9 +124,9 @@ namespace KillFeed
             }
 
             //Weapon if applicable
-            if (ModData.Settings.DisplayWeapon)
+            if (dinfo.HasValue && dinfo.Value.Weapon != null)
             {
-                if (dinfo.HasValue && dinfo.Value.Weapon != null)
+                if (ModData.Settings.DisplayWeapon)
                 {
                     currentXPosition += 2f;
 
@@ -157,20 +157,20 @@ namespace KillFeed
 
                     currentXPosition += nameRect.width;
                 }
-            }
-            else
-            {
-                currentXPosition += 2f;
+                else
+                {
+                    currentXPosition += 2f;
 
-                Vector2 nameSize = Text.CalcSize("killed");
-                Rect nameRect = new Rect(ininRect);
-                nameRect.x = currentXPosition;
-                nameRect.width = nameSize.x;
-                Widgets.Label(nameRect, "killed");
+                    Vector2 nameSize = Text.CalcSize("killed");
+                    Rect nameRect = new Rect(ininRect);
+                    nameRect.x = currentXPosition;
+                    nameRect.width = nameSize.x;
+                    Widgets.Label(nameRect, "killed");
 
-                currentXPosition += nameRect.width;
+                    currentXPosition += nameRect.width;
 
-                currentXPosition += 4f;
+                    currentXPosition += 4f;
+                }
             }
 
             //Victim
