@@ -15,4 +15,9 @@
     <StartArguments>-quicktest</StartArguments>
     <StartAction>Program</StartAction>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'v14|AnyCPU'">
+    <StartProgram>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe</StartProgram>
+    <StartArguments>-quicktest</StartArguments>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
 </Project>

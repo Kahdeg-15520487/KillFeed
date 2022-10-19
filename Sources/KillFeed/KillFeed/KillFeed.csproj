@@ -46,6 +46,14 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'v14|AnyCPU'">
+    <OutputPath>bin\v14\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lib.Harmony.2.1.0\lib\net35\0Harmony.dll</HintPath>
@@ -284,7 +292,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'v13|AnyCPU'">
     <PostBuildEvent>COPY "$(ProjectDir)bin\v13\KillFeed.dll" "$(ProjectDir)..\..\..\v1.3\Assemblies\KillFeed.dll"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'v14|AnyCPU'">
+    <PostBuildEvent>COPY "$(ProjectDir)bin\v14\KillFeed.dll" "$(ProjectDir)..\..\..\v1.4\Assemblies\KillFeed.dll"</PostBuildEvent>
   </PropertyGroup>
 </Project>
