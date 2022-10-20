@@ -59,7 +59,7 @@
       <HintPath>..\packages\Lib.Harmony.2.1.0\lib\net35\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
@@ -292,10 +292,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'v13|AnyCPU'">
-    <PostBuildEvent>COPY "$(ProjectDir)bin\v13\KillFeed.dll" "$(ProjectDir)..\..\..\v1.3\Assemblies\KillFeed.dll"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'v14|AnyCPU'">
-    <PostBuildEvent>COPY "$(ProjectDir)bin\v14\KillFeed.dll" "$(ProjectDir)..\..\..\v1.4\Assemblies\KillFeed.dll"</PostBuildEvent>
+  <PropertyGroup>
+    <PostBuildEvent />
   </PropertyGroup>
 </Project>
